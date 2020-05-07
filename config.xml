@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>kb_extratabs</name>
+	<displayName><![CDATA[Extra Tabs]]></displayName>
+	<version><![CDATA[1.0.0]]></version>
+	<description><![CDATA[Extra tabs for product]]></description>
+	<author><![CDATA[Konrad Babiarz]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<is_configurable>1</is_configurable>
+	<need_instance>1</need_instance>
+</module>
