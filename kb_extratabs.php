@@ -57,8 +57,11 @@ class Kb_extratabs extends Module
         $sql = array();
 
         $sql[] = "ALTER TABLE " . _DB_PREFIX_ . "product_lang "
-                . "ADD field_ingredients VARCHAR(255) NULL,"
-                . "ADD field_nutri VARCHAR(255) NULL";
+                . "ADD field_ingredients VARCHAR(255),"
+                . "ADD field_nutri VARCHAR(255),"
+                . "ADD field_storage_preparation VARCHAR(255),"
+                . "ADD field_package VARCHAR(255),"
+                . "ADD field_other VARCHAR(255)";
         
         foreach ($sql as $query) {
             if (Db::getInstance()->execute($query) == false) {
@@ -73,7 +76,10 @@ class Kb_extratabs extends Module
 
         $sql[] = "ALTER TABLE " . _DB_PREFIX_ . "product_lang "
                 . "DROP field_ingredients,"
-                . "DROP field_nutri";
+                . "DROP field_nutri,"
+                . "DROP field_storage_preparation,"
+                . "DROP field_package,"
+                . "DROP field_other";
         
         foreach ($sql as $query) {
             if (Db::getInstance()->execute($query) == false) {
@@ -107,10 +113,13 @@ class Kb_extratabs extends Module
         $product = new Product($params['id_product']);
         $languages = Language::getLanguages($active);
         $this->context->smarty->assign(array(
-            'field_ingredients' => $product->field_ingredients,
-            'field_nutri' => $product->field_nutri,
-            'languages' => $languages,
-            'default_language' => $this->context->employee->id_lang,
+            'field_ingredients'         => $product->field_ingredients,
+            'field_nutri'               => $product->field_nutri,
+            'field_storage_preparation' => $product->field_storage_preparation,
+            'field_package'             => $product->field_package,
+            'field_other'               => $product->field_other,
+            'languages'                 => $languages,
+            'default_language'          => $this->context->employee->id_lang,
             )
         );
 
@@ -121,14 +130,39 @@ class Kb_extratabs extends Module
     {
 
         $content = $params['product'];
-        $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
-            ->setTitle('Seller Info')
-            ->setContent($content->field_nutri);
+        
+        if($content->field_ingredients){
+            $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
+                ->setTitle($this->l('Ingredients'))
+                ->setContent($content->field_ingredients);
+        }
+        
+        if($content->field_nutri){
+            $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
+                ->setTitle($this->l('Nutritional values'))
+                ->setContent($content->field_nutri);
+        }
 
-        $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
-            ->setTitle('New Info')
-            ->setContent($content->field_ingredients);
+        if($content->field_storage_preparation){
+            $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
+                ->setTitle($this->l('Storage and preparation'))
+                ->setContent($content->field_storage_preparation);
 
+        }
+
+        if($content->field_package){
+            $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
+                ->setTitle($this->l('Package'))
+                ->setContent($content->field_package);
+
+        }
+
+        if($content->field_other){
+            $array[] = (new PrestaShop\PrestaShop\Core\Product\ProductExtraContent())
+                ->setTitle($this->l('Other'))
+                ->setContent($content->field_other);
+
+        }
 
         return $array;
     }
