@@ -57,11 +57,11 @@ class Kb_extratabs extends Module
         $sql = array();
 
         $sql[] = "ALTER TABLE " . _DB_PREFIX_ . "product_lang "
-                . "ADD field_ingredients VARCHAR(255),"
-                . "ADD field_nutri VARCHAR(255),"
-                . "ADD field_storage_preparation VARCHAR(255),"
-                . "ADD field_package VARCHAR(255),"
-                . "ADD field_other VARCHAR(255)";
+                . "ADD field_ingredients text,"
+                . "ADD field_nutri text,"
+                . "ADD field_storage_preparation text,"
+                . "ADD field_package text,"
+                . "ADD field_other text";
         
         foreach ($sql as $query) {
             if (Db::getInstance()->execute($query) == false) {
